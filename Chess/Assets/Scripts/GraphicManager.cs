@@ -16,6 +16,8 @@ public class GraphicManager : MonoBehaviour
         float positionX = -3.5f;
         float positionY = -3.5f;
 
+            //--!!-- Not Working as expected --!!--
+
         for(int i = 0; i < vectorLocation.Length; i++)
         {
             for(int y = 0; y < 8; y++)
