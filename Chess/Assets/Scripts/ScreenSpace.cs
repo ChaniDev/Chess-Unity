@@ -9,8 +9,7 @@ public class ScreenSpace : MonoBehaviour
 
     void Start()
     {
-        float screenRatio = mainCam.aspect;
-
-        print(screenRatio);
+        float camHeight = mainCam.orthographicSize;
+        float camWidth = camHeight * mainCam.aspect;
     }
 }
