@@ -10,6 +10,8 @@ public class ScreenSpace : MonoBehaviour
     void Start()
     {
         ScreenSize();
+
+        print("Done");
     }
 
     void ScreenSize()
@@ -17,7 +19,12 @@ public class ScreenSpace : MonoBehaviour
         float camHeight = mainCam.orthographicSize;
         float camWidth = camHeight * mainCam.aspect;
 
-        if(camWidth < 4.15 || camWidth > 4.25 )
+        if(camHeight < 6.8)
+        {
+            return;
+        }
+
+        if(camWidth < 4.1 || camWidth > 4.3 )
         {
             FixSize(camWidth);
         }
@@ -25,7 +32,7 @@ public class ScreenSpace : MonoBehaviour
 
     void FixSize(float cameraWidth)
     {
-        if(cameraWidth < 4.15)
+        if(cameraWidth < 4.1)
         {
             mainCam.orthographicSize = mainCam.orthographicSize + 0.1f;
         }
