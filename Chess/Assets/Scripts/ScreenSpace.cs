@@ -14,12 +14,14 @@ public class ScreenSpace : MonoBehaviour
         print("Done");
     }
 
+        //-- It is used to fix the screen size to prevent any clipping -- 
+
     void ScreenSize()
     {
         float camHeight = mainCam.orthographicSize;
         float camWidth = camHeight * mainCam.aspect;
 
-        if(camHeight < 6.8)
+        if(camHeight < 6)
         {
             return;
         }
