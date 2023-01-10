@@ -4,13 +4,37 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    void Update()
+    Vector2[] boardCoordinate = new Vector2[64];
+
+
+
+
+    void Start()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        CoordinateBoard();
+    }
+
+    void CoordinateBoard() // -- Index the Board Coordinates --
+    {
+        int slotNumber = 0;
+
+        for(int y = 0; y < 8; y++)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitData;
-            Physics.Raycast(ray, out hitData);
-        }
+            for(int x = 0; x < 8; x++)
+            {
+                boardCoordinate[slotNumber] = new Vector2(x,y);
+                slotNumber++;
+            }
+        }      
+    }
+
+    public void SelectedInput(int slotID, string pieceType)
+    {
+
+    }
+
+    void AvailableMoves()
+    {
+        
     }
 }
