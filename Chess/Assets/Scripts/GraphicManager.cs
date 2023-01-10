@@ -15,28 +15,27 @@ public class GraphicManager : MonoBehaviour
     {
         float positionX = -3.5f;
         float positionY = -3.5f;
+        int indexLocation = 0;
 
-            //--!!-- Not Working as expected --!!--
-
-        for(int i = 0; i < vectorLocation.Length; i++)
+        for(int y = 0; y < 8; y++)
         {
-            for(int y = 0; y < 8; y++)
+            for(int x = 0; x < 8; x++)
             {
-                for(int x = 0; x < 8; x++)
-                {
-                    vectorLocation[i] = new Vector2(positionX,positionY);
-                    positionX++;
-                }
-                positionX = -3.5f;
-                positionY++;
+                vectorLocation[indexLocation] = new Vector2(positionX,positionY);
+                indexLocation++;
+
+                positionX++;
             }
+
+            positionX = -3.5f;
+            positionY++;
         }
 
-        print("DONE");
+        print("Board Vector Generated");
     }   
 
-    public void MovePiece()
+    public void MovePiece(int locationIndex)
     {
-
+        
     }
 }
