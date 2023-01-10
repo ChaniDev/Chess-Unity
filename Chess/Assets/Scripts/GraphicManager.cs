@@ -6,7 +6,7 @@ public class GraphicManager : MonoBehaviour
 {
     Vector2[] vectorLocation = new Vector2[64]; //--Total Slots--
 
-    void Start()
+    public void Initiate()
     {
         GenerateIndex(); // -- To generate an Index of Board -- 
     }
@@ -36,6 +36,6 @@ public class GraphicManager : MonoBehaviour
 
     public void MovePiece(int locationIndex)
     {
-        
+
     }
 }
