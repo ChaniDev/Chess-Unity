@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
         insPlayerManager.RequestPlayerInput(1);
 
-        
+        print("Cow");
     }
 
 }
