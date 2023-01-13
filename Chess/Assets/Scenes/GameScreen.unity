@@ -364,7 +364,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   piecePosition: {x: 1, y: 4}
-  boardIndex: 33
 --- !u!1 &208732908
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,9 +783,11 @@ GameObject:
   m_Component:
   - component: {fileID: 890192901}
   - component: {fileID: 890192900}
+  - component: {fileID: 890192902}
+  - component: {fileID: 890192903}
   m_Layer: 0
   m_Name: MovePreview
-  m_TagString: Untagged
+  m_TagString: Move
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -858,6 +859,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &890192902
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890192899}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &890192903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890192899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a2486b78eb1174d97601f22dc6c291, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  piecePosition: {x: 0, y: 0}
 --- !u!1 &1243623747
 GameObject:
   m_ObjectHideFlags: 0

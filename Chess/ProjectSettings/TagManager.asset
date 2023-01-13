@@ -10,6 +10,7 @@ TagManager:
   - Rook
   - Queen
   - King
+  - Move
   layers:
   - Default
   - TransparentFX
