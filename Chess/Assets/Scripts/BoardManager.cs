@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    Vector2[] boardCoordinate = new Vector2[64];
+    GraphicManager insGraphicManager; 
 
-    List<GameObject> movesHolder = new List<GameObject>();
+    Vector2[] boardCoordinate = new Vector2[64];
+    
 
     int selectedPieceSlot;
     string selectedPieceName;
@@ -14,6 +15,8 @@ public class BoardManager : MonoBehaviour
 
     void Start()
     {
+        insGraphicManager = FindObjectOfType<GraphicManager>();
+
         CoordinateBoard();
     }
 
@@ -28,27 +31,36 @@ public class BoardManager : MonoBehaviour
                 boardCoordinate[slotNumber] = new Vector2(x,y);
                 slotNumber++;
             }
-        }      
+        }     
+
+        print("Board Indexed");
     }
 
-    public void SelectedInput(string slotID, string pieceType)
+    public void SelectedInput(Vector2 positionPiece, string pieceType)
     {
-        print($"Hit At {slotID} -|- Piece Selected {pieceType}");
+        print($"Hit At {positionPiece} -|- Piece Selected {pieceType}");
 
-        AvailableMoves(pieceType);
+        AvailableMoves(pieceType, positionPiece);
     }
 
-    void AvailableMoves(string PieceName)
+    void AvailableMoves(string PieceName, Vector2 positionPiece)
     {
-        for(int i = 0; i < movesHolder.Count; i++)
+        if(PieceName.Equals("Board"))
         {
-            Destroy(movesHolder[i].gameObject);
+            insGraphicManager.SpawnMoves(104);
         }
-        movesHolder.Clear();
 
         if(PieceName.Equals("Pawn"))
         {
-            
+            Vector2 spawnVector = new Vector2(positionPiece.x,positionPiece.y+1);
+            for(int i = 0; i < boardCoordinate.Length; i++)
+            {
+                if(boardCoordinate[i].x == spawnVector.x 
+                        && boardCoordinate[i].y == spawnVector.y)
+                    {
+                        insGraphicManager.SpawnMoves(i);
+                    }
+            }
         }
     }
 }
