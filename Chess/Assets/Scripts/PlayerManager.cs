@@ -31,6 +31,9 @@ public class PlayerManager : MonoBehaviour
                 {
                     print("Hit");
 
+                    Vector2 pieceLocation = rayHit.transform.gameObject
+                        .GetComponent<Storage>().GetPosition();
+
                     insBoardManager.SelectedInput
                         (rayHit.collider.name, rayHit.collider.tag);
                 }

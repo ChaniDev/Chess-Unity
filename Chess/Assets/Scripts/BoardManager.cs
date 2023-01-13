@@ -6,6 +6,8 @@ public class BoardManager : MonoBehaviour
 {
     Vector2[] boardCoordinate = new Vector2[64];
 
+    List<GameObject> movesHolder = new List<GameObject>();
+
     int selectedPieceSlot;
     string selectedPieceName;
 
@@ -38,6 +40,15 @@ public class BoardManager : MonoBehaviour
 
     void AvailableMoves(string PieceName)
     {
-        
+        for(int i = 0; i < movesHolder.Count; i++)
+        {
+            Destroy(movesHolder[i].gameObject);
+        }
+        movesHolder.Clear();
+
+        if(PieceName.Equals("Pawn"))
+        {
+            
+        }
     }
 }
