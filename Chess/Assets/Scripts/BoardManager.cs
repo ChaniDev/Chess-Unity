@@ -31,11 +31,12 @@ public class BoardManager : MonoBehaviour
 
     public void SelectedInput(string slotID, string pieceType)
     {
-        
-        
+        print($"Hit At {slotID} -|- Piece Selected {pieceType}");
+
+        AvailableMoves(pieceType);
     }
 
-    void AvailableMoves()
+    void AvailableMoves(string PieceName)
     {
         
     }
