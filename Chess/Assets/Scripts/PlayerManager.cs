@@ -31,11 +31,20 @@ public class PlayerManager : MonoBehaviour
                 {
                     print("Hit");
 
-                    Vector2 pieceLocation = rayHit.transform.gameObject
-                        .GetComponent<Storage>().GetPosition();
+                    if(rayHit.collider.tag.Equals("Board"))
+                    {
+                        insBoardManager.SelectedInput
+                        (new Vector2(0f,0f), rayHit.collider.tag);
+                    }
+                    else
+                    {
+                        Vector2 pieceLocation = rayHit.transform.gameObject
+                        .GetComponent<PieceStorage>().GetPosition();
 
-                    insBoardManager.SelectedInput
-                        (rayHit.collider.name, rayHit.collider.tag);
+                        insBoardManager.SelectedInput
+                        (pieceLocation, rayHit.collider.tag);
+                    }
+                    
                 }
             }
         }
