@@ -11,7 +11,7 @@ public class ScreenSpace : MonoBehaviour
     {
         ScreenSize();
 
-        print("Done");
+        print("Screen Size Calibrated");
     }
 
         //-- It is used to fix the screen size to prevent any clipping -- 
