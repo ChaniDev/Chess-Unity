@@ -32,10 +32,8 @@ public class PlayerManager : MonoBehaviour
                     print("Hit");
 
                     insBoardManager.SelectedInput
-                        (System.Convert.ToInt16(rayHit.collider.name), rayHit.collider.tag);
+                        (rayHit.collider.name, rayHit.collider.tag);
                 }
-
-                
             }
         }
     }
