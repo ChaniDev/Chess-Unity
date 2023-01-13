@@ -22,8 +22,6 @@ public class GameManager : MonoBehaviour
         insGraphicManager.Initiate();
 
         insPlayerManager.RequestPlayerInput(1);
-
-        print("Cow");
     }
 
 }
