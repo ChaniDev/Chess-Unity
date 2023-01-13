@@ -6,7 +6,8 @@ public class BoardManager : MonoBehaviour
 {
     Vector2[] boardCoordinate = new Vector2[64];
 
-
+    int selectedPieceSlot;
+    string selectedPieceName;
 
 
     void Start()
@@ -28,9 +29,10 @@ public class BoardManager : MonoBehaviour
         }      
     }
 
-    public void SelectedInput(int slotID, string pieceType)
+    public void SelectedInput(string slotID, string pieceType)
     {
-
+        
+        
     }
 
     void AvailableMoves()
