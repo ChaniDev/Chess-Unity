@@ -36,13 +36,8 @@ public class GraphicManager : MonoBehaviour
         print("Board Vector Generated");
     }   
 
-    public void MovePiece(int locationIndex)
+    public Vector3 RequestVectorPosition(int indexPosition)
     {
-
-    }
-
-    public void SpawnMoves(int indexPosition)
-    {
-        
+        return(vectorLocation[indexPosition]);
     }
 }
