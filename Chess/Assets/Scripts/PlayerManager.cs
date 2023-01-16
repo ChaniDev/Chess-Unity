@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
 
                 if(Physics.Raycast(ray, out rayHit))
                 {
-                    print("Hit");
+                    print("Hit "+ rayHit.collider.name);
 
                     Vector2 pieceIndex = rayHit.transform.GetComponent
                         <PieceStorage>().GetIndexData();
