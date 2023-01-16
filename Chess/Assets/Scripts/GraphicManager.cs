@@ -5,9 +5,6 @@ using UnityEngine;
 public class GraphicManager : MonoBehaviour
 {
     Vector3[] vectorLocation = new Vector3[64]; //--Total Slots--
-    List<GameObject> movesHolder = new List<GameObject>();
-
-    [SerializeField] private GameObject suggestedMove;
 
     public void Initiate()
     {
@@ -46,16 +43,6 @@ public class GraphicManager : MonoBehaviour
 
     public void SpawnMoves(int indexPosition)
     {
-        if(indexPosition == 104)
-        {
-            for(int i = 0; i < movesHolder.Count; i++)
-            {
-                Destroy(movesHolder[i].gameObject);
-            }
-            movesHolder.Clear();
-        }
-
-        GameObject TEMP_move = Instantiate
-            (suggestedMove, vectorLocation[indexPosition], Quaternion.identity);
+        
     }
 }

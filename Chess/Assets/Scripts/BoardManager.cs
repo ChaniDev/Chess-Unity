@@ -38,29 +38,11 @@ public class BoardManager : MonoBehaviour
 
     public void SelectedInput(Vector2 positionPiece, string pieceType)
     {
-        print($"Hit At {positionPiece} -|- Piece Selected {pieceType}");
-
-        AvailableMoves(pieceType, positionPiece);
+        
     }
 
     void AvailableMoves(string PieceName, Vector2 positionPiece)
     {
-        if(PieceName.Equals("Board"))
-        {
-            insGraphicManager.SpawnMoves(104);
-        }
-
-        if(PieceName.Equals("Pawn"))
-        {
-            Vector2 spawnVector = new Vector2(positionPiece.x,positionPiece.y+1);
-            for(int i = 0; i < boardCoordinate.Length; i++)
-            {
-                if(boardCoordinate[i].x == spawnVector.x 
-                        && boardCoordinate[i].y == spawnVector.y)
-                    {
-                        insGraphicManager.SpawnMoves(i);
-                    }
-            }
-        }
+        
     }
 }
