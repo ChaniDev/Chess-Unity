@@ -9,8 +9,9 @@ TagManager:
   - Bishop
   - Rook
   - Queen
-  - King
   - Move
+  - Black King
+  - White King
   layers:
   - Default
   - TransparentFX
