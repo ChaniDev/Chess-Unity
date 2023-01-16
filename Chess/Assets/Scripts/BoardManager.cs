@@ -5,10 +5,12 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
     GraphicManager insGraphicManager; 
+    PieceMoveset insPieceMoveset;
 
     Vector2[] boardIndex = new Vector2[64];
     List<GameObject> pieceStorage = new List<GameObject>(); 
-    List<GameObject> movesStorage = new List<GameObject>();
+    List<Vector3> possibleMoves = new List<Vector3>();
+    List<GameObject> moveStorage = new List<GameObject>();
     
         // -- Black Pieces --
     [SerializeField] GameObject whitePawn;
@@ -35,6 +37,7 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         insGraphicManager = FindObjectOfType<GraphicManager>();
+        insPieceMoveset = FindObjectOfType<PieceMoveset>();
 
         CoordinateBoard();
     }
@@ -59,21 +62,42 @@ public class BoardManager : MonoBehaviour
 
     void InstantiatePiece()
     {
-        Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(28);
-            //--Test index 28 --
-        GameObject Pawn = Instantiate(whitePawn, vectorLocation, Quaternion.identity);
-        Pawn.GetComponent<PieceStorage>().SetIndexData(boardIndex[28]);
-        Pawn.GetComponent<PieceStorage>().SetIfInverted(false);
-        Pawn.GetComponent<PieceStorage>().SetIfFirstMove(true);
-        pieceStorage.Add(Pawn);
+        int[] whiteSpawnArray = new int[]{28,28+7,28+9};
+
+        foreach(int i in whiteSpawnArray)
+        {
+            Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(i);
+                //--Test index i --
+            GameObject Pawn = Instantiate(whitePawn, vectorLocation, Quaternion.identity);
+            Pawn.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
+            Pawn.GetComponent<PieceStorage>().SetIfInverted(false);
+            Pawn.GetComponent<PieceStorage>().SetIfFirstMove(true);
+            pieceStorage.Add(Pawn);
+        }
+
+        int[] blackSpawnArray = new int[]{28+8};
+
+        foreach(int i in blackSpawnArray)
+        {
+            Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(i);
+                //--Test index i --
+            GameObject Pawn = Instantiate(blackPawn, vectorLocation, Quaternion.identity);
+            Pawn.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
+            Pawn.GetComponent<PieceStorage>().SetIfInverted(true);
+            Pawn.GetComponent<PieceStorage>().SetIfFirstMove(true);
+            pieceStorage.Add(Pawn);
+        }
     } 
 
     public void SelectPiece
-        (string pieceType, Vector2 indexPosition, bool isInverted, bool isFirstMove)
+        (
+            string pieceType, Vector2 indexPosition, bool isInverted, 
+            bool isFirstMove, bool isWhite
+        )
     {
         if(pieceType.Equals("Board"))
         {
-
+            DestroyMoves();
         }
         else if(pieceType.Equals("Move"))
         {
@@ -81,60 +105,50 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
-            CalculateMoves(pieceType, indexPosition, isInverted, isFirstMove);
+            insPieceMoveset.CalculateMoves
+                (
+                    pieceType, indexPosition, isInverted, isFirstMove, 
+                    boardIndex, pieceStorage, possibleMoves, isWhite
+                );
         }
     }
 
-    void DestroyMoves()
+    public void DestroyMoves()
     {
-        for(int i = 0; i < movesStorage.Count; i ++)
+        for(int i = 0; i < moveStorage.Count; i ++)
         {
-            Destroy(movesStorage[i]);
+            Destroy(moveStorage[i]);
         }
-        movesStorage.Clear();
+        moveStorage.Clear();
+
+        possibleMoves.Clear();
+    }
+
+
+    
+
+    public void CheckIfLegal(List<Vector3> possibleMoves)
+    {
+        // -- Check if move is Legal --
+
+        DrawLegalMoves(possibleMoves);
+    }
+
+    void DrawLegalMoves( List<Vector3> possibleMoves)
+    {
+        for(int i = 0; i < possibleMoves.Count; i ++)
+        {
+            Vector3 vectorLocation = insGraphicManager.RequestVectorPosition
+                (System.Convert.ToInt16(possibleMoves[i].z));
+
+            GameObject move = Instantiate(movePreview, vectorLocation, Quaternion.identity); 
+            move.GetComponent<PieceStorage>().SetIndexData(possibleMoves[i]);
+            moveStorage.Add(move);
+        }
     }
 
     void MovePiece()
     {
 
     } 
-
-    void CalculateMoves
-        (string pieceType, Vector2 positionPiece, bool isInverted, bool isFirstMove)
-    {
-
-
-        if(pieceType.Equals("Pawn"))
-        {
-            if(!isInverted && isFirstMove)
-            {   
-                Vector2 lastMoveIndex = positionPiece;
-                    //-- Pawn Moves 2 Slots if First Move on that piece (-Inverted-)
-                for(int i = 0; i < 2; i++)
-                {
-                    lastMoveIndex.y++;
-
-                    for(int z = 0; z < boardIndex.Length; z++)
-                    {
-                        if(boardIndex[z].x.Equals(lastMoveIndex.x) &&
-                            (boardIndex[z].y.Equals(lastMoveIndex.y)))
-                        {
-                            Vector3 vectorPos = insGraphicManager.RequestVectorPosition(z);
-
-                            
-                        }
-                    }
-                }
-            }
-            else if(!isInverted && !isFirstMove)
-            {
-
-            }
-        }
-    }
-
-    void CheckIfLegal(List<move>)
-    {
-
-    }
 }

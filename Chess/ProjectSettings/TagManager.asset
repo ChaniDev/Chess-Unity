@@ -12,6 +12,7 @@ TagManager:
   - Move
   - Black King
   - White King
+  - Board
   layers:
   - Default
   - TransparentFX

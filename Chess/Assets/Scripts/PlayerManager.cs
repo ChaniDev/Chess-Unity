@@ -39,9 +39,15 @@ public class PlayerManager : MonoBehaviour
                     
                     bool isFirstMove = rayHit.transform.GetComponent
                         <PieceStorage>().GetIfFirstMove();
+                    bool isWhite = rayHit.transform.GetComponent
+                        <PieceStorage>().GetColourData();
                         
                     insBoardManager.
-                        SelectPiece(rayHit.collider.tag, pieceIndex, isInverted, isFirstMove);
+                        SelectPiece
+                            (
+                                rayHit.collider.tag, pieceIndex, isInverted, isFirstMove,
+                                isWhite
+                            );
                 }
             }
         }
