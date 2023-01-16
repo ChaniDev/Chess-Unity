@@ -27,7 +27,22 @@ public class PlayerManager : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit rayHit;
 
-                
+                if(Physics.Raycast(ray, out rayHit))
+                {
+                    print("Hit");
+
+                    Vector2 pieceIndex = rayHit.transform.GetComponent
+                        <PieceStorage>().GetIndexData();
+
+                    bool isInverted = rayHit.transform.GetComponent
+                        <PieceStorage>().GetIfInverted();
+                    
+                    bool isFirstMove = rayHit.transform.GetComponent
+                        <PieceStorage>().GetIfFirstMove();
+                        
+                    insBoardManager.
+                        SelectPiece(rayHit.collider.tag, pieceIndex, isInverted, isFirstMove);
+                }
             }
         }
     }
