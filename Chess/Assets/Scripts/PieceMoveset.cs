@@ -43,71 +43,7 @@ public class PieceMoveset : MonoBehaviour
                         }
                     }
                 }
-                    // -- Right Kill --
-                lastMoveIndex = positionPiece;
-                lastMoveIndex = new Vector3(lastMoveIndex.x+1, lastMoveIndex.y+1,0);
-                for(int i = 0; i < pieceStorage.Count; i ++)
-                {
-                    Vector2 pieceIndex = new Vector2(0,0);
-                    pieceIndex = pieceStorage[i].GetComponent<PieceStorage>().GetIndexData();
-                    
-                    if(pieceStorage[i].GetComponent<PieceStorage>().GetColourData() &&
-                        isWhite)
-                    {
-                        // - Target Friendly
-                    }
-                    else
-                    {
-                        if(pieceIndex.x.Equals(lastMoveIndex.x) &&
-                            pieceIndex.y.Equals(lastMoveIndex.y))
-                        {
-                            for(int z = 0; z < boardIndex.Length; z++)
-                            {
-                                if(boardIndex[z].x.Equals(lastMoveIndex.x) &&
-                                    (boardIndex[z].y.Equals(lastMoveIndex.y)))
-                                {
-                                    lastMoveIndex = new Vector3
-                                        (lastMoveIndex.x,lastMoveIndex.y,z);
-        
-                                    possibleMoves.Add(lastMoveIndex);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                    // -- Left Kill --
-                lastMoveIndex = positionPiece;
-                lastMoveIndex = new Vector3(lastMoveIndex.x-1, lastMoveIndex.y+1,0);
-                for(int i = 0; i < pieceStorage.Count; i ++)
-                {
-                    Vector2 pieceIndex = new Vector2(0,0);
-                    pieceIndex = pieceStorage[i].GetComponent<PieceStorage>().GetIndexData();
-                    
-                    if(pieceStorage[i].GetComponent<PieceStorage>().GetColourData() &&
-                        isWhite)
-                    {
-                        // - Target Friendly
-                    }
-                    else
-                    {
-                        if(pieceIndex.x.Equals(lastMoveIndex.x) &&
-                            pieceIndex.y.Equals(lastMoveIndex.y))
-                        {
-                            for(int z = 0; z < boardIndex.Length; z++)
-                            {
-                                if(boardIndex[z].x.Equals(lastMoveIndex.x) &&
-                                    (boardIndex[z].y.Equals(lastMoveIndex.y)))
-                                {
-                                    lastMoveIndex = new Vector3
-                                        (lastMoveIndex.x,lastMoveIndex.y,z);
-        
-                                    possibleMoves.Add(lastMoveIndex);
-                                }
-                            }
-                        }
-                    }
-                }
+                LeftRight(lastMoveIndex);
             }
             else if(!isInverted && !isFirstMove)
             {
@@ -128,6 +64,11 @@ public class PieceMoveset : MonoBehaviour
                         }
                     }
                 }
+                LeftRight(lastMoveIndex);
+            }
+
+            void LeftRight(Vector3 lastMoveIndex)
+            {
                     // -- Right Kill --
                 lastMoveIndex = positionPiece;
                 lastMoveIndex = new Vector3(lastMoveIndex.x+1, lastMoveIndex.y+1,0);
