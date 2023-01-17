@@ -169,6 +169,7 @@ public class BoardManager : MonoBehaviour
     void MovePiece(Vector2 indexPosition)
     {
         Vector2 tmpIndexPosition = indexPosition;
+        int? destroyIndex = null;
 
             if(selectedPiece.Equals(null))
             {
@@ -178,6 +179,7 @@ public class BoardManager : MonoBehaviour
             
             pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
                 .SetIfFirstMove(false);
+
             
             for(int i = 0; i < pieceStorage.Count; i++)
             {
@@ -185,7 +187,8 @@ public class BoardManager : MonoBehaviour
                     .Equals(indexPosition))
                 {
                     Destroy(pieceStorage[i]);
-                    pieceStorage.RemoveAt(i);
+                    destroyIndex = i;
+                    break;
                 }
             }
 
@@ -203,6 +206,15 @@ public class BoardManager : MonoBehaviour
             }
 
             pieceStorage[(int)selectedPiece].transform.position = vectorPosition;
+
+            if(destroyIndex.Equals(null))
+            {
+                //--Do Nothing--//
+            }
+            else
+            {
+                pieceStorage.RemoveAt((int)destroyIndex);
+            }
 
             DestroyMoves();
             
