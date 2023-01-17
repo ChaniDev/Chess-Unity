@@ -33,6 +33,8 @@ public class BoardManager : MonoBehaviour
         // -- Move GameObject
     [SerializeField] GameObject movePreview;
 
+    [SerializeField] int? selectedPiece = null; 
+
 
     void Start()
     {
@@ -75,7 +77,7 @@ public class BoardManager : MonoBehaviour
             pieceStorage.Add(Pawn);
         }
 
-        int[] blackSpawnArray = new int[]{28+8,28+16,28+18,28+14};
+        int[] blackSpawnArray = new int[]{0,1,28+8,28+16,28+18,28+14};
 
         foreach(int i in blackSpawnArray)
         {
@@ -98,15 +100,24 @@ public class BoardManager : MonoBehaviour
         if(pieceType.Equals("Board"))
         {
             DestroyMoves();
+
+            selectedPiece = null;
         }
         else if(pieceType.Equals("Move"))
         {
-            
-
-            // !!! -- Scan the board for check -- !!!
+            MovePiece(indexPosition);
         }
         else
         {
+            for(int i = 0; i < pieceStorage.Count; i++)
+            {
+                if(pieceStorage[i].GetComponent<PieceStorage>().GetIndexData()
+                    .Equals(indexPosition))
+                {
+                    selectedPiece = i;
+                }
+            }
+
             insPieceMoveset.CalculateMoves
                 (
                     pieceType, indexPosition, isInverted, isFirstMove, 
@@ -135,10 +146,19 @@ public class BoardManager : MonoBehaviour
 
     void DrawLegalMoves( List<Vector3> possibleMoves)
     {
+        int vectorIndex = 0;
+
         for(int i = 0; i < possibleMoves.Count; i ++)
         {
-            Vector3 vectorLocation = insGraphicManager.RequestVectorPosition
-                (System.Convert.ToInt16(possibleMoves[i].z));
+            for(int j = 0; j < boardIndex.Length; j++)
+            {
+                if(possibleMoves[i].Equals(boardIndex[j]))
+                {
+                    vectorIndex = j;
+                }
+            }
+
+            Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(vectorIndex);
 
             GameObject move = Instantiate(movePreview, vectorLocation, Quaternion.identity); 
             move.GetComponent<PieceStorage>().SetIndexData(possibleMoves[i]);
@@ -146,8 +166,47 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void MovePiece()
+    void MovePiece(Vector2 indexPosition)
     {
+        Vector2 tmpIndexPosition = indexPosition;
 
+            if(selectedPiece.Equals(null))
+            {
+                DestroyMoves();
+                return;
+            }
+            
+            pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+                .SetIfFirstMove(false);
+            
+            for(int i = 0; i < pieceStorage.Count; i++)
+            {
+                if(pieceStorage[i].GetComponent<PieceStorage>().GetIndexData()
+                    .Equals(indexPosition))
+                {
+                    Destroy(pieceStorage[i]);
+                    pieceStorage.RemoveAt(i);
+                }
+            }
+
+            pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+                .SetIndexData(tmpIndexPosition);
+
+            Vector3 vectorPosition = new Vector3(0,0,0);
+
+            for(int i = 0; i < boardIndex.Length; i++)
+            {
+                if(boardIndex[i].Equals(tmpIndexPosition))
+                {
+                    vectorPosition = insGraphicManager.RequestVectorPosition(i);
+                }
+            }
+
+            pieceStorage[(int)selectedPiece].transform.position = vectorPosition;
+
+            DestroyMoves();
+            
+
+            // !!! -- Scan the board for check -- !!!
     } 
 }
