@@ -71,7 +71,7 @@ public class BoardManager : MonoBehaviour
             GameObject Pawn = Instantiate(whitePawn, vectorLocation, Quaternion.identity);
             Pawn.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
             Pawn.GetComponent<PieceStorage>().SetIfInverted(false);
-            Pawn.GetComponent<PieceStorage>().SetIfFirstMove(true);
+            Pawn.GetComponent<PieceStorage>().SetIfFirstMove(false);
             pieceStorage.Add(Pawn);
         }
 
@@ -101,7 +101,9 @@ public class BoardManager : MonoBehaviour
         }
         else if(pieceType.Equals("Move"))
         {
+            
 
+            // !!! -- Scan the board for check -- !!!
         }
         else
         {
@@ -124,12 +126,9 @@ public class BoardManager : MonoBehaviour
         possibleMoves.Clear();
     }
 
-
-    
-
     public void CheckIfLegal(List<Vector3> possibleMoves)
     {
-        // -- Check if move is Legal --
+        // !!! -- Check if move is Legal -- !!!
 
         DrawLegalMoves(possibleMoves);
     }
