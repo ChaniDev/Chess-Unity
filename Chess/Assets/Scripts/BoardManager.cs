@@ -62,7 +62,7 @@ public class BoardManager : MonoBehaviour
 
     void InstantiatePiece()
     {
-        int[] whiteSpawnArray = new int[]{28,28+7,28+9};
+        int[] whiteSpawnArray = new int[]{28,28+5,28+11};
 
         foreach(int i in whiteSpawnArray)
         {
@@ -71,11 +71,11 @@ public class BoardManager : MonoBehaviour
             GameObject Pawn = Instantiate(whitePawn, vectorLocation, Quaternion.identity);
             Pawn.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
             Pawn.GetComponent<PieceStorage>().SetIfInverted(false);
-            Pawn.GetComponent<PieceStorage>().SetIfFirstMove(false);
+            Pawn.GetComponent<PieceStorage>().SetIfFirstMove(true);
             pieceStorage.Add(Pawn);
         }
 
-        int[] blackSpawnArray = new int[]{28+8,28+16};
+        int[] blackSpawnArray = new int[]{28+8,28+16,28+18,28+14};
 
         foreach(int i in blackSpawnArray)
         {
