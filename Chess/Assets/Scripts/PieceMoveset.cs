@@ -24,32 +24,62 @@ public class PieceMoveset : MonoBehaviour
 
         if(pieceType.Equals("Pawn"))
         {
-            if(!isInverted && isFirstMove)
+            if(isFirstMove)
             {   
                 Vector3 lastMoveIndex = positionPiece;
                 bool disableSpawn = false;
 
-                    //-- Pawn Moves 2 Slots if First Move on that piece (-Inverted-)
-                for(int i = 0; i < 2; i++)
+                    //-- Pawn Moves 2 Slots if First Move on that piece (-)
+                if(!isInverted)
                 {
-                    lastMoveIndex.y++;
-                    moveStraight(lastMoveIndex, disableSpawn);
+                    for(int i = 0; i < 2; i++)
+                    {
+                        lastMoveIndex.y++;
+                        moveStraight(lastMoveIndex, disableSpawn);
+                    }
+
+                    LeftRight(lastMoveIndex, isInverted);
                 }
-                LeftRight(lastMoveIndex);
+
+                    //-- Pawn Moves 2 Slots if First Move on that piece (-)
+                if(isInverted)
+                {
+                    for(int i = 0; i < 2; i++)
+                    {
+                        lastMoveIndex.y--;
+                        moveStraight(lastMoveIndex, disableSpawn);
+                    }
+
+                    LeftRight(lastMoveIndex, isInverted);
+                }
             }
 
-            if(!isInverted && !isFirstMove)
+            if(!isFirstMove)
             {
                 Vector3 lastMoveIndex = positionPiece;
                 bool disableSpawn = false;
 
-                    //-- Pawn Moves 1 Slots if First Move on that piece (-Inverted-)
-                for(int i = 0; i < 1; i++)
+                if(!isInverted)
                 {
-                    lastMoveIndex.y++;
-                    moveStraight(lastMoveIndex, disableSpawn);
+                        //-- Pawn Moves 1 Slots if First Move on that piece (-Inverted-)
+                    for(int i = 0; i < 1; i++)
+                    {
+                        lastMoveIndex.y++;
+                        moveStraight(lastMoveIndex, disableSpawn);
+                    }
+                    LeftRight(lastMoveIndex, isInverted);
                 }
-                LeftRight(lastMoveIndex);
+
+                if(isInverted)
+                {
+                        //-- Pawn Moves 1 Slots if First Move on that piece (-Inverted-)
+                    for(int i = 0; i < 1; i++)
+                    {
+                        lastMoveIndex.y--;
+                        moveStraight(lastMoveIndex, disableSpawn);
+                    }
+                    LeftRight(lastMoveIndex, isInverted);
+                }
             }
 
 
@@ -88,20 +118,39 @@ public class PieceMoveset : MonoBehaviour
                 }
             }
 
-            void LeftRight(Vector3 lastMoveIndex)
+            void LeftRight(Vector3 lastMoveIndex, bool isInverted)
             {
-                    // -- Right Kill --
-                lastMoveIndex = positionPiece;
-                lastMoveIndex = new Vector3(lastMoveIndex.x+1, lastMoveIndex.y+1,0);
-                
-                KillZone(lastMoveIndex);
+                if(!isInverted)
+                {
+                        // -- Right Kill --
+                    lastMoveIndex = positionPiece;
+                    lastMoveIndex = new Vector3(lastMoveIndex.x+1, lastMoveIndex.y+1,0);
+                    
+                    KillZone(lastMoveIndex);
 
 
-                    // -- Left Kill --
-                lastMoveIndex = positionPiece;
-                lastMoveIndex = new Vector3(lastMoveIndex.x-1, lastMoveIndex.y+1,0);
+                        // -- Left Kill --
+                    lastMoveIndex = positionPiece;
+                    lastMoveIndex = new Vector3(lastMoveIndex.x-1, lastMoveIndex.y+1,0);
 
-                KillZone(lastMoveIndex);
+                    KillZone(lastMoveIndex);
+                }
+
+                if(isInverted)
+                {
+                        // -- Right Kill --
+                    lastMoveIndex = positionPiece;
+                    lastMoveIndex = new Vector3(lastMoveIndex.x+1, lastMoveIndex.y-1,0);
+                    
+                    KillZone(lastMoveIndex);
+
+
+                        // -- Left Kill --
+                    lastMoveIndex = positionPiece;
+                    lastMoveIndex = new Vector3(lastMoveIndex.x-1, lastMoveIndex.y-1,0);
+
+                    KillZone(lastMoveIndex);
+                }
             }
 
             void KillZone(Vector2 lastMoveIndex)
