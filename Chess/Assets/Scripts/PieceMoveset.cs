@@ -28,100 +28,64 @@ public class PieceMoveset : MonoBehaviour
             {   
                 Vector3 lastMoveIndex = positionPiece;
                 bool disableSpawn = false;
-                bool disableNextSpawn = false;
 
                     //-- Pawn Moves 2 Slots if First Move on that piece (-Inverted-)
                 for(int i = 0; i < 2; i++)
                 {
                     lastMoveIndex.y++;
-
-                    for(int a = 0; a < pieceStorage.Count; a++)
-                    {
-                        if(pieceStorage[a].GetComponent<PieceStorage>().GetIndexData().Equals
-                            (lastMoveIndex))
-                        {
-                            if(pieceStorage[a].GetComponent<PieceStorage>().GetColourData()
-                                .Equals(isWhite))
-                            {
-                                disableSpawn = true;
-                            }
-                            else if(pieceStorage[a].GetComponent<PieceStorage>()
-                                .GetColourData() != (isWhite))
-                            {
-                                disableNextSpawn = true;
-                            }
-                        }
-                    }
-
-                    if(!disableSpawn)
-                    {
-                        for(int z = 0; z < boardIndex.Length; z++)
-                        {
-                            if(boardIndex[z].x.Equals(lastMoveIndex.x) &&
-                                (boardIndex[z].y.Equals(lastMoveIndex.y)))
-                            {
-                                lastMoveIndex = new Vector3(lastMoveIndex.x,lastMoveIndex.y,z);
-
-                                possibleMoves.Add(lastMoveIndex);
-                            }
-                        }
-
-                        if(disableNextSpawn)
-                        {
-                            disableSpawn = true;
-                        }
-                    }
+                    moveStraight(lastMoveIndex, disableSpawn);
                 }
                 LeftRight(lastMoveIndex);
             }
-            else if(!isInverted && !isFirstMove)
+
+            if(!isInverted && !isFirstMove)
             {
                 Vector3 lastMoveIndex = positionPiece;
                 bool disableSpawn = false;
-                bool disableNextSpawn = false;
 
                     //-- Pawn Moves 1 Slots if First Move on that piece (-Inverted-)
                 for(int i = 0; i < 1; i++)
                 {
                     lastMoveIndex.y++;
+                    moveStraight(lastMoveIndex, disableSpawn);
+                }
+                LeftRight(lastMoveIndex);
+            }
 
-                    for(int a = 0; a < pieceStorage.Count; a++)
+
+
+            //-- Moves ---- Moves ---- Moves ---- Moves ---- Moves ---- Moves ---- Moves --//
+
+            void moveStraight(Vector2 lastMoveIndex, bool disableSpawn)
+            {
+                if(lastMoveIndex.x > (7) || lastMoveIndex.y > (7) 
+                        || lastMoveIndex.x < (0) || lastMoveIndex.y < (0))
                     {
-                        if(pieceStorage[a].GetComponent<PieceStorage>().GetIndexData().Equals
-                            (lastMoveIndex))
-                        {
-                            if(pieceStorage[a].GetComponent<PieceStorage>().GetColourData()
-                                .Equals(isWhite))
-                            {
-                                disableSpawn = true;
-                            }
-                            else if(pieceStorage[a].GetComponent<PieceStorage>()
-                                .GetColourData() != (isWhite))
-                            {
-                                disableNextSpawn = true;
-                            }
-                        }
+                        return;
                     }
-                    if(!disableSpawn)
+
+                for(int a = 0; a < pieceStorage.Count; a++)
+                {
+                    if(pieceStorage[a].GetComponent<PieceStorage>().GetIndexData().Equals
+                        (lastMoveIndex))
                     {
-                        for(int z = 0; z < boardIndex.Length; z++)
+                        if(pieceStorage[a].GetComponent<PieceStorage>().GetColourData()
+                            .Equals(isWhite))
                         {
-                            if(boardIndex[z].x.Equals(lastMoveIndex.x) &&
-                                (boardIndex[z].y.Equals(lastMoveIndex.y)))
-                            {
-                                lastMoveIndex = new Vector3(lastMoveIndex.x,lastMoveIndex.y,z);
-
-                                possibleMoves.Add(lastMoveIndex);
-                            }
+                            disableSpawn = true;
                         }
-
-                        if(disableNextSpawn)
+                        else if(pieceStorage[a].GetComponent<PieceStorage>()
+                            .GetColourData() != (isWhite))
                         {
                             disableSpawn = true;
                         }
                     }
                 }
-                LeftRight(lastMoveIndex);
+
+                if(!disableSpawn)
+                {
+                    possibleMoves.Add(lastMoveIndex);        
+                }
             }
 
             void LeftRight(Vector3 lastMoveIndex)
@@ -129,39 +93,25 @@ public class PieceMoveset : MonoBehaviour
                     // -- Right Kill --
                 lastMoveIndex = positionPiece;
                 lastMoveIndex = new Vector3(lastMoveIndex.x+1, lastMoveIndex.y+1,0);
-                for(int i = 0; i < pieceStorage.Count; i ++)
-                {
-                    Vector2 pieceIndex = new Vector2(0,0);
-                    pieceIndex = pieceStorage[i].GetComponent<PieceStorage>().GetIndexData();
-                    
-                    if(pieceStorage[i].GetComponent<PieceStorage>().GetColourData() &&
-                        isWhite)
-                    {
-                        // - Target Friendly
-                    }
-                    else
-                    {
-                        if(pieceIndex.x.Equals(lastMoveIndex.x) &&
-                            pieceIndex.y.Equals(lastMoveIndex.y))
-                        {
-                            for(int z = 0; z < boardIndex.Length; z++)
-                            {
-                                if(boardIndex[z].x.Equals(lastMoveIndex.x) &&
-                                    (boardIndex[z].y.Equals(lastMoveIndex.y)))
-                                {
-                                    lastMoveIndex = new Vector3
-                                        (lastMoveIndex.x,lastMoveIndex.y,z);
-        
-                                    possibleMoves.Add(lastMoveIndex);
-                                }
-                            }
-                        }
-                    }
-                }
+                
+                KillZone(lastMoveIndex);
+
 
                     // -- Left Kill --
                 lastMoveIndex = positionPiece;
                 lastMoveIndex = new Vector3(lastMoveIndex.x-1, lastMoveIndex.y+1,0);
+
+                KillZone(lastMoveIndex);
+            }
+
+            void KillZone(Vector2 lastMoveIndex)
+            {   
+                if(lastMoveIndex.x > (7) || lastMoveIndex.y > (7) 
+                        || lastMoveIndex.x < (0) || lastMoveIndex.y < (0))
+                    {
+                        return;
+                    }
+
                 for(int i = 0; i < pieceStorage.Count; i ++)
                 {
                     Vector2 pieceIndex = new Vector2(0,0);
@@ -177,22 +127,13 @@ public class PieceMoveset : MonoBehaviour
                         if(pieceIndex.x.Equals(lastMoveIndex.x) &&
                             pieceIndex.y.Equals(lastMoveIndex.y))
                         {
-                            for(int z = 0; z < boardIndex.Length; z++)
-                            {
-                                if(boardIndex[z].x.Equals(lastMoveIndex.x) &&
-                                    (boardIndex[z].y.Equals(lastMoveIndex.y)))
-                                {
-                                    lastMoveIndex = new Vector3
-                                        (lastMoveIndex.x,lastMoveIndex.y,z);
-        
-                                    possibleMoves.Add(lastMoveIndex);
-                                }
-                            }
+                            possibleMoves.Add(lastMoveIndex);        
                         }
                     }
                 }
             }
         }
+
 
         insBoardManager.CheckIfLegal(possibleMoves);
     }
