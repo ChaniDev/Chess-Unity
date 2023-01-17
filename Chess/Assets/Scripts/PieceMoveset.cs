@@ -27,6 +27,7 @@ public class PieceMoveset : MonoBehaviour
             if(!isInverted && isFirstMove)
             {   
                 Vector3 lastMoveIndex = positionPiece;
+                bool disableNextSpawn = false;
                     //-- Pawn Moves 2 Slots if First Move on that piece (-Inverted-)
                 for(int i = 0; i < 2; i++)
                 {
