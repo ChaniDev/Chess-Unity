@@ -13,6 +13,9 @@ public class BoardManager : MonoBehaviour
     List<GameObject> moveStorage = new List<GameObject>();
     
         // -- Black Pieces --
+    [SerializeField] Transform whitePieces;
+    [Space(20)]
+
     [SerializeField] GameObject whitePawn;
     [SerializeField] GameObject whiteKnight;
     [SerializeField] GameObject whiteBishop;
@@ -20,6 +23,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject whiteQueen;
     [SerializeField] GameObject whiteKing;
 
+    [Space(20)]
+    [SerializeField] Transform blackPieces;
     [Space(20)]
         // -- Black Pieces --
     [SerializeField] GameObject blackPawn;
@@ -30,10 +35,19 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject blackKing;
 
     [Space(20)]
+    [SerializeField] Transform MoveStorage;
+
+    [Space(20)]
+
         // -- Move GameObject
     [SerializeField] GameObject movePreview;
 
     [SerializeField] int? selectedPiece = null; 
+
+    [Space(20)]
+
+    [SerializeField] GameObject UpgradePrompt;
+    bool pieceUpgrade = false;
 
 
     void Start()
@@ -94,21 +108,53 @@ public class BoardManager : MonoBehaviour
     public void SelectPiece
         (
             string pieceType, Vector2 indexPosition, bool isInverted, 
-            bool isFirstMove, bool isWhite
+            bool isFirstMove, bool isWhite, string upgradeName
         )
     {
+        if(pieceType.Equals("Upgrade"))
+        {
+            if(upgradeName.Equals("Queen"))
+            {
+                UpgradePiece("Queen");
+
+                UpgradePrompt.SetActive(false);
+            }
+            else if(upgradeName.Equals("Knight"))
+            {
+                UpgradePiece("Knight");
+
+                UpgradePrompt.SetActive(false);
+            }
+        }
+
         if(pieceType.Equals("Board"))
         {
             DestroyMoves();
 
-            selectedPiece = null;
+            if(pieceUpgrade)
+            {
+                ResetPosition();
+            }
         }
         else if(pieceType.Equals("Move"))
         {
+            if(pieceUpgrade)
+            {                
+                ResetPosition();
+            }
+
             MovePiece(indexPosition);
         }
         else
         {
+            if(pieceUpgrade)
+            {
+                UpgradePrompt.SetActive(false);
+                
+                ResetPosition();
+                
+            }
+
             for(int i = 0; i < pieceStorage.Count; i++)
             {
                 if(pieceStorage[i].GetComponent<PieceStorage>().GetIndexData()
@@ -160,7 +206,8 @@ public class BoardManager : MonoBehaviour
 
             Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(vectorIndex);
 
-            GameObject move = Instantiate(movePreview, vectorLocation, Quaternion.identity); 
+            GameObject move = Instantiate
+                (movePreview, vectorLocation, Quaternion.identity, MoveStorage); 
             move.GetComponent<PieceStorage>().SetIndexData(possibleMoves[i]);
             moveStorage.Add(move);
         }
@@ -176,6 +223,9 @@ public class BoardManager : MonoBehaviour
                 DestroyMoves();
                 return;
             }
+
+            pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+                .SetPreviousIndex();
             
             pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
                 .SetIfFirstMove(false);
@@ -217,8 +267,128 @@ public class BoardManager : MonoBehaviour
             }
 
             DestroyMoves();
-            
 
+            if(pieceStorage[(int)selectedPiece].gameObject.tag.Equals("Pawn"))
+            {
+                Vector2 pieceIndex = pieceStorage[(int)selectedPiece]
+                    .GetComponent<PieceStorage>().GetIndexData();
+                
+                if(pieceIndex.y.Equals(7) || pieceIndex.y.Equals(0))
+                {
+                    pieceUpgrade = true;
+                    UpgradePrompt.SetActive(true);
+                }
+            }
             // !!! -- Scan the board for check -- !!!
     } 
+
+    void UpgradePiece(string upgradeName)
+    {
+        bool tmpColour = pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+            .GetColourData();
+
+        bool tmpIsInverted = pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+            .GetIfInverted();
+
+        Vector2 tmpIndexPosition = pieceStorage[(int)selectedPiece]
+            .GetComponent<PieceStorage>().GetIndexData();
+
+        Vector3 tmpVectorData = new Vector3(0,0,0);
+
+        for(int i = 0; i < boardIndex.Length; i++)
+        {
+            if(tmpIndexPosition.Equals(boardIndex[i]))
+            {
+                tmpVectorData = insGraphicManager.RequestVectorPosition(i);
+            }
+        }
+
+        Destroy(pieceStorage[(int)selectedPiece]);
+        pieceStorage.RemoveAt((int)selectedPiece);
+
+        if(upgradeName.Equals("Queen"))
+        {
+            if(tmpColour) // --White
+            {
+                GameObject Queen = Instantiate
+                    (whiteQueen, tmpVectorData, Quaternion.identity, whitePieces);
+                Queen.GetComponent<PieceStorage>().SetIfInverted(tmpIsInverted);
+                Queen.GetComponent<PieceStorage>().SetColourData(tmpColour);
+                Queen.GetComponent<PieceStorage>().SetIndexData(tmpIndexPosition);
+
+                pieceStorage.Add(Queen);
+            }
+            else    // --Black
+            {
+                GameObject Queen = Instantiate
+                    (blackQueen, tmpVectorData, Quaternion.identity, blackPieces);
+                Queen.GetComponent<PieceStorage>().SetIfInverted(tmpIsInverted);
+                Queen.GetComponent<PieceStorage>().SetColourData(tmpColour);
+                Queen.GetComponent<PieceStorage>().SetIndexData(tmpIndexPosition);
+
+                pieceStorage.Add(Queen);
+            }
+        }
+        else if(upgradeName.Equals("Knight"))
+        {
+            if(tmpColour) // --White
+            {
+                GameObject Knight = Instantiate
+                    (whiteKnight, tmpVectorData, Quaternion.identity, whitePieces);
+                Knight.GetComponent<PieceStorage>().SetIfInverted(tmpIsInverted);
+                Knight.GetComponent<PieceStorage>().SetColourData(tmpColour);
+                Knight.GetComponent<PieceStorage>().SetIndexData(tmpIndexPosition);
+
+                pieceStorage.Add(Knight);
+            }
+            else    // --Black
+            {
+                GameObject Knight = Instantiate
+                    (blackKnight, tmpVectorData, Quaternion.identity, blackPieces);
+                Knight.GetComponent<PieceStorage>().SetIfInverted(tmpIsInverted);
+                Knight.GetComponent<PieceStorage>().SetColourData(tmpColour);
+                Knight.GetComponent<PieceStorage>().SetIndexData(tmpIndexPosition);
+
+                pieceStorage.Add(Knight);
+            }
+        }
+
+        pieceUpgrade = false;
+
+        print("Upgrade");
+        selectedPiece = null;
+    }
+
+    void ResetPosition()
+    {
+        Vector2 tmpIndexPosition = new Vector2(0,0);
+        Vector3 tmpVectorPosition = new Vector3(0,0,0);
+
+        tmpIndexPosition = pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+            .GetPreviousIndex();
+
+        for(int i = 0; i < boardIndex.Length; i++)
+        {
+            if(tmpIndexPosition.Equals(boardIndex[i]))
+            {
+                tmpVectorPosition = insGraphicManager.RequestVectorPosition(i);
+            }
+        }
+
+        pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+            .SetIndexData(tmpIndexPosition);
+
+        pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
+            .SetPreviousIndex();
+
+        pieceStorage[(int)selectedPiece].gameObject.transform.position = tmpVectorPosition;
+
+        print("Reset");
+
+        UpgradePrompt.SetActive(false);
+        selectedPiece = null;
+        pieceUpgrade = false;
+
+        return;
+    }
 }
