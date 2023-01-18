@@ -244,6 +244,18 @@ public class BoardManager : MonoBehaviour
 
             pieceStorage[(int)selectedPiece].GetComponent<PieceStorage>()
                 .SetIndexData(tmpIndexPosition);
+            
+            if(pieceStorage[(int)selectedPiece].gameObject.tag.Equals("Pawn"))
+            {
+                Vector2 pieceIndex = pieceStorage[(int)selectedPiece]
+                    .GetComponent<PieceStorage>().GetIndexData();
+                
+                if(pieceIndex.y.Equals(7) || pieceIndex.y.Equals(0))
+                {
+                    pieceUpgrade = true;
+                    UpgradePrompt.SetActive(true);
+                }
+            }
 
             Vector3 vectorPosition = new Vector3(0,0,0);
 
@@ -267,18 +279,6 @@ public class BoardManager : MonoBehaviour
             }
 
             DestroyMoves();
-
-            if(pieceStorage[(int)selectedPiece].gameObject.tag.Equals("Pawn"))
-            {
-                Vector2 pieceIndex = pieceStorage[(int)selectedPiece]
-                    .GetComponent<PieceStorage>().GetIndexData();
-                
-                if(pieceIndex.y.Equals(7) || pieceIndex.y.Equals(0))
-                {
-                    pieceUpgrade = true;
-                    UpgradePrompt.SetActive(true);
-                }
-            }
             // !!! -- Scan the board for check -- !!!
     } 
 
