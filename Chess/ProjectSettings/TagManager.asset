@@ -13,6 +13,7 @@ TagManager:
   - Black King
   - White King
   - Board
+  - Upgrade
   layers:
   - Default
   - TransparentFX
