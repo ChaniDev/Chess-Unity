@@ -24,10 +24,13 @@ public class PieceMoveset : MonoBehaviour
 
         if(pieceType.Equals("Pawn"))
         {
+
+            Vector3 lastMoveIndex = positionPiece;
+            bool disableSpawn = false;
+
             if(isFirstMove)
             {   
-                Vector3 lastMoveIndex = positionPiece;
-                bool disableSpawn = false;
+                
 
                     //-- Pawn Moves 2 Slots if First Move on that piece (-)
                 if(!isInverted)
@@ -35,10 +38,10 @@ public class PieceMoveset : MonoBehaviour
                     for(int i = 0; i < 2; i++)
                     {
                         lastMoveIndex.y++;
-                        moveStraight(lastMoveIndex, disableSpawn);
+                        moveStraight();
                     }
 
-                    LeftRight(lastMoveIndex, isInverted);
+                    LeftRight();
                 }
 
                     //-- Pawn Moves 2 Slots if First Move on that piece (-)
@@ -47,27 +50,24 @@ public class PieceMoveset : MonoBehaviour
                     for(int i = 0; i < 2; i++)
                     {
                         lastMoveIndex.y--;
-                        moveStraight(lastMoveIndex, disableSpawn);
+                        moveStraight();
                     }
 
-                    LeftRight(lastMoveIndex, isInverted);
+                    LeftRight();
                 }
             }
 
             if(!isFirstMove)
             {
-                Vector3 lastMoveIndex = positionPiece;
-                bool disableSpawn = false;
-
                 if(!isInverted)
                 {
                         //-- Pawn Moves 1 Slots if First Move on that piece (-Inverted-)
                     for(int i = 0; i < 1; i++)
                     {
                         lastMoveIndex.y++;
-                        moveStraight(lastMoveIndex, disableSpawn);
+                        moveStraight();
                     }
-                    LeftRight(lastMoveIndex, isInverted);
+                    LeftRight();
                 }
 
                 if(isInverted)
@@ -76,9 +76,9 @@ public class PieceMoveset : MonoBehaviour
                     for(int i = 0; i < 1; i++)
                     {
                         lastMoveIndex.y--;
-                        moveStraight(lastMoveIndex, disableSpawn);
+                        moveStraight();
                     }
-                    LeftRight(lastMoveIndex, isInverted);
+                    LeftRight();
                 }
             }
 
@@ -86,7 +86,7 @@ public class PieceMoveset : MonoBehaviour
 
             //-- Moves ---- Moves ---- Moves ---- Moves ---- Moves ---- Moves ---- Moves --//
 
-            void moveStraight(Vector2 lastMoveIndex, bool disableSpawn)
+            void moveStraight()
             {
                 if(lastMoveIndex.x > (7) || lastMoveIndex.y > (7) 
                         || lastMoveIndex.x < (0) || lastMoveIndex.y < (0))
@@ -118,7 +118,7 @@ public class PieceMoveset : MonoBehaviour
                 }
             }
 
-            void LeftRight(Vector3 lastMoveIndex, bool isInverted)
+            void LeftRight()
             {
                 if(!isInverted)
                 {
@@ -166,8 +166,8 @@ public class PieceMoveset : MonoBehaviour
                     Vector2 pieceIndex = new Vector2(0,0);
                     pieceIndex = pieceStorage[i].GetComponent<PieceStorage>().GetIndexData();
                     
-                    if(pieceStorage[i].GetComponent<PieceStorage>().GetColourData() &&
-                        isWhite)
+                    if(pieceStorage[i].GetComponent<PieceStorage>().GetColourData()
+                        .Equals(isWhite))
                     {
                         // - Target Friendly
                     }
