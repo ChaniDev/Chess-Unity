@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour
                         SelectPiece
                             (
                                 rayHit.collider.tag, pieceIndex, isInverted, isFirstMove,
-                                isWhite
+                                isWhite, rayHit.collider.name
                             );
                 }
             }
