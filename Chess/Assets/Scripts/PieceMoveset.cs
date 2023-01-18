@@ -224,18 +224,18 @@ public class PieceMoveset : MonoBehaviour
                             // --Friendly
                             return;
                         }
-                        else
-                        {
-                            possibleMoves.Add(moveIndex);
-                        }
-                    }
-                    else
-                    {
-                        possibleMoves.Add(moveIndex);
                     }
                 }
+
+                possibleMoves.Add(moveIndex);
             }
         }
+
+        
+
+
+
+
 
         bool OutOfBounds(Vector2 lastMoveIndex)
         {
