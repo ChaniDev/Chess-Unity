@@ -23,7 +23,7 @@ public class GraphicManager : MonoBehaviour
             {
                 vectorLocation[indexLocation].x = positionX;
                 vectorLocation[indexLocation].y = positionY;
-                vectorLocation[indexLocation].z = 0;
+                vectorLocation[indexLocation].z = 1;
                 indexLocation++;
 
                 positionX++;
