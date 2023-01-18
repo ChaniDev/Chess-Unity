@@ -94,7 +94,7 @@ public class PieceMoveset : MonoBehaviour
                 {
                     return;
                 }
-                
+
                 for(int a = 0; a < pieceStorage.Count; a++)
                 {
                     if(pieceStorage[a].GetComponent<PieceStorage>().GetIndexData().Equals
@@ -222,6 +222,7 @@ public class PieceMoveset : MonoBehaviour
                             .Equals(isWhite))
                         {
                             // --Friendly
+                            return;
                         }
                         else
                         {
