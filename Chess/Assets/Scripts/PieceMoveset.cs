@@ -88,12 +88,13 @@ public class PieceMoveset : MonoBehaviour
 
             void moveStraight()
             {
-                if(lastMoveIndex.x > (7) || lastMoveIndex.y > (7) 
-                        || lastMoveIndex.x < (0) || lastMoveIndex.y < (0))
-                    {
-                        return;
-                    }
-
+                bool isvalid = true;
+                isvalid = OutOfBounds(lastMoveIndex);
+                if(!isvalid)
+                {
+                    return;
+                }
+                
                 for(int a = 0; a < pieceStorage.Count; a++)
                 {
                     if(pieceStorage[a].GetComponent<PieceStorage>().GetIndexData().Equals
@@ -155,11 +156,12 @@ public class PieceMoveset : MonoBehaviour
 
             void KillZone(Vector2 lastMoveIndex)
             {   
-                if(lastMoveIndex.x > (7) || lastMoveIndex.y > (7) 
-                        || lastMoveIndex.x < (0) || lastMoveIndex.y < (0))
-                    {
-                        return;
-                    }
+                bool isvalid = true;
+                isvalid = OutOfBounds(lastMoveIndex);
+                if(!isvalid)
+                {
+                    return;
+                } 
 
                 for(int i = 0; i < pieceStorage.Count; i ++)
                 {
@@ -183,6 +185,67 @@ public class PieceMoveset : MonoBehaviour
             }
         }
 
+        if(pieceType.Equals("Knight"))
+        {
+            Vector2[] moveSlots = new Vector2[8]
+            {
+                new Vector2(positionPiece.x-1,positionPiece.y+2),
+                new Vector2(positionPiece.x+1,positionPiece.y+2),
+                new Vector2(positionPiece.x-1,positionPiece.y-2),
+                new Vector2(positionPiece.x+1,positionPiece.y-2),
+
+                new Vector2(positionPiece.x+2,positionPiece.y-1),
+                new Vector2(positionPiece.x+2,positionPiece.y+1),
+                new Vector2(positionPiece.x-2,positionPiece.y-1),
+                new Vector2(positionPiece.x-2,positionPiece.y+1),
+            };
+
+            for(int i = 0; i < moveSlots.Length; i++)
+            {
+                bool isvalid = true;
+                isvalid = OutOfBounds(moveSlots[i]);
+
+                if(isvalid)
+                {
+                    CheckIfFriendly(moveSlots[i]);
+                }
+            }
+
+            void CheckIfFriendly(Vector2 moveIndex)
+            {
+                for(int i = 0; i < pieceStorage.Count; i++)
+                {
+                    if(pieceStorage[i].GetComponent<PieceStorage>().GetIndexData()
+                        .Equals(moveIndex))
+                    {
+                        if(pieceStorage[i].GetComponent<PieceStorage>().GetColourData()
+                            .Equals(isWhite))
+                        {
+                            // --Friendly
+                        }
+                        else
+                        {
+                            possibleMoves.Add(moveIndex);
+                        }
+                    }
+                    else
+                    {
+                        possibleMoves.Add(moveIndex);
+                    }
+                }
+            }
+        }
+
+        bool OutOfBounds(Vector2 lastMoveIndex)
+        {
+            if(lastMoveIndex.x > (7) || lastMoveIndex.y > (7) 
+                || lastMoveIndex.x < (0) || lastMoveIndex.y < (0))
+            {
+                return(false);
+            }
+
+            return(true);
+        }
 
         insBoardManager.CheckIfLegal(possibleMoves);
     }

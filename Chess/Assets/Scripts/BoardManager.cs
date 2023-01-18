@@ -78,7 +78,7 @@ public class BoardManager : MonoBehaviour
 
     void InstantiatePiece()
     {
-        int[] whiteSpawnArray = new int[]{2+8+8+8+8+8};
+        int[] whiteSpawnArray = new int[]{2+8+8+8+8+8, 4+8+8+8};
 
         foreach(int i in whiteSpawnArray)
         {
@@ -91,7 +91,7 @@ public class BoardManager : MonoBehaviour
             pieceStorage.Add(Pawn);
         }
 
-        int[] blackSpawnArray = new int[]{2+8+8};
+        int[] blackSpawnArray = new int[]{2+8+8, 5+8+8+8+8};
 
         foreach(int i in blackSpawnArray)
         {
