@@ -84,11 +84,11 @@ public class BoardManager : MonoBehaviour
         {
             Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(i);
                 //--Test index i --
-            GameObject Bishop = Instantiate(whiteBishop, vectorLocation, Quaternion.identity);
-            Bishop.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
-            Bishop.GetComponent<PieceStorage>().SetIfInverted(false);
-            Bishop.GetComponent<PieceStorage>().SetIfFirstMove(false);
-            pieceStorage.Add(Bishop);
+            GameObject Rook = Instantiate(whiteRook, vectorLocation, Quaternion.identity);
+            Rook.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
+            Rook.GetComponent<PieceStorage>().SetIfInverted(false);
+            Rook.GetComponent<PieceStorage>().SetIfFirstMove(false);
+            pieceStorage.Add(Rook);
         }
 
         int[] blackSpawnArray = new int[]{2+8+8, 5+8+8+8+8};
@@ -97,11 +97,11 @@ public class BoardManager : MonoBehaviour
         {
             Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(i);
                 //--Test index i --
-            GameObject Bishop = Instantiate(blackBishop, vectorLocation, Quaternion.identity);
-            Bishop.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
-            Bishop.GetComponent<PieceStorage>().SetIfInverted(true);
-            Bishop.GetComponent<PieceStorage>().SetIfFirstMove(false);
-            pieceStorage.Add(Bishop);
+            GameObject Rook = Instantiate(blackRook, vectorLocation, Quaternion.identity);
+            Rook.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
+            Rook.GetComponent<PieceStorage>().SetIfInverted(true);
+            Rook.GetComponent<PieceStorage>().SetIfFirstMove(false);
+            pieceStorage.Add(Rook);
         }
     } 
 
