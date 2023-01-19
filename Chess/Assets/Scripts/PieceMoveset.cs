@@ -297,6 +297,72 @@ public class PieceMoveset : MonoBehaviour
             }
         }
 
+        if(pieceType.Equals("Rook"))
+        {
+            bool disableSpawn = false;
+
+            Vector2[] moveArray = new Vector2[]
+            {
+                new Vector2(0,+1),
+                new Vector2(0,-1),
+                new Vector2(+1,0),
+                new Vector2(-1,0),
+            };
+
+            for(int i = 0; i < moveArray.Length; i++)
+            {
+                disableSpawn = false;
+
+                Vector2 lastMoveIndex = positionPiece;
+                
+                for(int j = 0; j < 20; j++)
+                {
+                    lastMoveIndex.x = lastMoveIndex.x+(moveArray[i].x);
+                    lastMoveIndex.y = lastMoveIndex.y+(moveArray[i].y);
+
+                    MoveScan(lastMoveIndex);
+                }
+            }
+
+            void MoveScan(Vector2 lastMoveIndex)
+            {
+                if(disableSpawn)
+                {
+                    return;
+                }
+
+                bool isValid = OutOfBounds(lastMoveIndex);
+                {
+                    if(!isValid)
+                    {
+                        return;
+                    }
+                }
+
+
+                for(int i = 0; i < pieceStorage.Count; i++)
+                {
+                    if(pieceStorage[i].GetComponent<PieceStorage>().GetIndexData()
+                        .Equals(lastMoveIndex))
+                    {
+                        if(pieceStorage[i].GetComponent<PieceStorage>().GetColourData()
+                            .Equals(isWhite))
+                        {
+                            // -- Target is Friendly
+                            disableSpawn = true;
+                            return;
+                        }
+                        else
+                        {
+                            disableSpawn = true;
+                        }
+                    }
+                }
+
+                possibleMoves.Add(lastMoveIndex);
+            }
+        }
+
 
 
 
