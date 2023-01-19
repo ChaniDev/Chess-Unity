@@ -48,12 +48,15 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] GameObject UpgradePrompt;
     bool pieceUpgrade = false;
+    int colourSelected = 0;
 
 
-    void Start()
+    public void StartGame(int insColourSelected)
     {
         insGraphicManager = FindObjectOfType<GraphicManager>();
         insPieceMoveset = FindObjectOfType<PieceMoveset>();
+
+        colourSelected = insColourSelected;
 
         CoordinateBoard();
     }
@@ -76,32 +79,92 @@ public class BoardManager : MonoBehaviour
         InstantiatePiece();
     }
 
+    class Piece
+    {
+        public int indexID;
+        public GameObject spawnPiece;
+        public bool invertedMove = false;
+
+        public void setData(int index, GameObject piece, bool inverted)
+        {
+            indexID = index;
+            spawnPiece = piece;
+            invertedMove = inverted;
+        }
+    }
+
     void InstantiatePiece()
     {
-        int[] whiteSpawnArray = new int[]{2+8+8+8+8+8, 4+8+8+8};
+        int[] topArray = new int[]{48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63};
+        int[] bottomArray = new int[]{8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7};
 
-        foreach(int i in whiteSpawnArray)
+        GameObject[] blackPieceArray = new GameObject[]
         {
-            Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(i);
-                //--Test index i --
-            GameObject Rook = Instantiate(whiteRook, vectorLocation, Quaternion.identity);
-            Rook.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
-            Rook.GetComponent<PieceStorage>().SetIfInverted(false);
-            Rook.GetComponent<PieceStorage>().SetIfFirstMove(false);
-            pieceStorage.Add(Rook);
+            blackPawn,blackPawn,blackPawn,blackPawn,blackPawn,blackPawn,blackPawn,blackPawn,
+            blackRook,blackKnight,blackBishop,blackQueen,blackKing,blackBishop,blackKnight
+            ,blackRook
+        };
+
+        GameObject[] whitePieceArray = new GameObject[]
+        {
+            whitePawn,whitePawn,whitePawn,whitePawn,whitePawn,whitePawn,whitePawn,whitePawn,
+            whiteRook,whiteKnight,whiteBishop,whiteQueen,whiteKing,whiteBishop,whiteKnight
+            ,whiteRook
+        };
+
+        List<Piece> PieceList = new List<Piece>();
+
+        if(colourSelected == 1)
+        {
+            // -- White at bottom
+            for(int i = 0; i < bottomArray.Length; i++)
+            {
+                Piece piece = new Piece();
+                piece.setData(bottomArray[i],whitePieceArray[i], false);
+                
+                PieceList.Add(piece);
+            }
+
+            for(int i = 0; i < topArray.Length; i++)
+            {
+                Piece piece = new Piece();
+                piece.setData(topArray[i],blackPieceArray[i], true);
+                
+                PieceList.Add(piece);
+            }
+        }
+        else if(colourSelected == 2)
+        {
+            // -- Black at bottom
+            for(int i = 0; i < bottomArray.Length; i++)
+            {
+                Piece piece = new Piece();
+                piece.setData(bottomArray[i],blackPieceArray[i], false);
+                
+                PieceList.Add(piece);
+            }
+
+            for(int i = 0; i < topArray.Length; i++)
+            {
+                Piece piece = new Piece();
+                piece.setData(topArray[i],whitePieceArray[i], true);
+                
+                PieceList.Add(piece);
+            }
         }
 
-        int[] blackSpawnArray = new int[]{2+8+8, 5+8+8+8+8};
-
-        foreach(int i in blackSpawnArray)
+        for(int i = 0; i < PieceList.Count; i++)
         {
-            Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(i);
-                //--Test index i --
-            GameObject Rook = Instantiate(blackRook, vectorLocation, Quaternion.identity);
-            Rook.GetComponent<PieceStorage>().SetIndexData(boardIndex[i]);
-            Rook.GetComponent<PieceStorage>().SetIfInverted(true);
-            Rook.GetComponent<PieceStorage>().SetIfFirstMove(false);
-            pieceStorage.Add(Rook);
+            Vector3 vectorLocation = insGraphicManager
+                .RequestVectorPosition(PieceList[i].indexID);
+            //--Test index i --
+            GameObject Piece = Instantiate
+                (PieceList[i].spawnPiece, vectorLocation, Quaternion.identity);
+            Piece.GetComponent<PieceStorage>().SetIndexData
+                (boardIndex[PieceList[i].indexID]);
+            Piece.GetComponent<PieceStorage>().SetIfInverted(PieceList[i].invertedMove);
+            Piece.GetComponent<PieceStorage>().SetIfFirstMove(true);
+            pieceStorage.Add(Piece);
         }
     } 
 
@@ -205,6 +268,7 @@ public class BoardManager : MonoBehaviour
             }
 
             Vector3 vectorLocation = insGraphicManager.RequestVectorPosition(vectorIndex);
+            vectorLocation.z = 0;
 
             GameObject move = Instantiate
                 (movePreview, vectorLocation, Quaternion.identity, MoveStorage); 
