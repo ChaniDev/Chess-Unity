@@ -296,6 +296,7 @@ public class PieceMoveset : MonoBehaviour
                 possibleMoves.Add(lastMoveIndex);
             }
         }
+        
 
         if(pieceType.Equals("Rook"))
         {
